@@ -1,7 +1,7 @@
 clc, clear, close all
 
 % Wczytanie danych
-data = readtable('dane/pacjenci.csv');
+data = readtable('3/dane/pacjenci.csv');
 height_men = data.wzrost(strcmp(data.plec,'M'));
 height_women = data.wzrost(strcmp(data.plec, 'K'));
 
@@ -25,6 +25,15 @@ y_men = (1:n_men) / n_men;
 n_women = length(height_women);
 x_women = sort(height_women);
 y_women = (1:n_women) / n_women;
+
+figure;
+subplot(2,1,1);
+qqplot(height_men);
+title('Wykres Q-Q plot dla wzrostu mężczyzn');
+subplot(2,1,2)
+qqplot(height_women);
+title('Wykres Q-Q plot dla wzrostu kobiet');
+
 
 figure;
 plot(x_men, y_men, 'bo-', x_women, y_women, 'ro-');
