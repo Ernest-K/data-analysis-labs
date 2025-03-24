@@ -23,5 +23,7 @@ subplot(1, 2, 2);
 qqplot(pedagogy_salary);
 title('Wykres QQ dla płac absolwentów pedagogiki');
 
-% Objaśnienie wyboru testu
-fprintf('\nDo testowania normalności rozkładu płac użyto testu Shapiro-Wilka, ponieważ jest on rekomendowany jako najbardziej skuteczny test normalności, szczególnie dla próbek o mniejszej liczbie obserwacji. Test ten ma większą moc od testów K-S i Lillieforsa w wykrywaniu odstępstw od normalności.\n');
+% Do testowania normalności rozkładu płac użyto testu Shapiro-Wilka, 
+% ponieważ jest on rekomendowany jako najbardziej skuteczny test normalności, 
+% szczególnie dla próbek o mniejszej liczbie obserwacji. 
+% Test ten ma większą moc od testów K-S i Lillieforsa w wykrywaniu odstępstw od normalności.

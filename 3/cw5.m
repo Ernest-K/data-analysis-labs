@@ -26,22 +26,10 @@ fprintf('Test K-S dla normalności Renety: h = %d, p = %.4f\n', h_ks_ren, p_ks_r
 [h_ttest, p_ttest] = ttest2(delikates, renety);
 fprintf('T-test dla porównania Delikates i Renety: h = %d, p = %.4f\n', h_ttest, p_ttest);
 
-% Wykres dystrybuant (jak poprzednio)
-n_delikates = length(delikates);
-x_delikates = sort(delikates);
-y_delikates = (1:n_delikates) / n_delikates;
-
-n_renety = length(renety);
-x_renety = sort(renety);
-y_renety = (1:n_renety) / n_renety;
-
 figure;
-plot(x_delikates, y_delikates, 'bo-', x_renety, y_renety, 'ro-');
-title('Empiryczne dystrybuanty dla czasu przebywania pszczół');
-xlabel('Czas [s]');
-ylabel('Dystrybuanta F(x)');
-legend('Delikates', 'Renety');
-grid on;
+cdfplot(delikates);
+hold;
+cdfplot(renety);
 
 % Test K-S dla porównania obu rozkładów (jak poprzednio)
 [h_ks, p_ks, ksstat] = kstest2(delikates, renety);

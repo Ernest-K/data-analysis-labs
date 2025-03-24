@@ -14,11 +14,11 @@ fprintf('Test K-S dla wzrostu mężczyzn: h = %d, p = %.4f\n', h_men, p_men);
 fprintf('Test K-S dla wzrostu kobiet: h = %d, p = %.4f\n', h_women, p_women);
 
 % Test Lillieforsa dla wzrostu mężczyzn
-[h_men_lillie, p_men_lillie, stat_men_lillie, cv_men_lillie] = lillietest(height_men);
+[h_men_lillie, p_men_lillie, stat_men_lillie, cv_men_lillie] = lillietest(height_men, 'MCTol', 1e-2);
 fprintf('Test Lillieforsa dla wzrostu mężczyzn: h = %d, p = %.4f\n', h_men_lillie, p_men_lillie);
 
 % Test Lillieforsa dla wzrostu kobiet
-[h_women_lillie, p_women_lillie, stat_women_lillie, cv_women_lillie] = lillietest(height_women);
+[h_women_lillie, p_women_lillie, stat_women_lillie, cv_women_lillie] = lillietest(height_women, 'MCTol', 1e-2);
 fprintf('Test Lillieforsa dla wzrostu kobiet: h = %d, p = %.4f\n', h_women_lillie, p_women_lillie);
 
 % Porównanie z wynikami testu K-S

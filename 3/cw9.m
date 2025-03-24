@@ -2,7 +2,7 @@ clc, clear, close all
 
 % Wczytanie danych
 capacitors = readtable('3/dane/kondensatory.csv');
-capacitor_capacity = capacitors.pojemnosc; % Zakładam, że dane są w pierwszej kolumnie
+capacitor_capacity = capacitors.pojemnosc;
 
 % Test Shapiro-Wilka z poziomem istotności 0.05
 [h_capacitors, p_capacitors, w_capacitors] = swtest(capacitor_capacity, 0.05);

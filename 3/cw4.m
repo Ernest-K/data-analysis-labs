@@ -17,15 +17,6 @@ fprintf('Test K-S dla wzrostu kobiet: h = %d, p = %.4f\n', h_women, p_women);
 [h_compare, p_compare, ksstat_compare] = kstest2(height_men, height_women);
 fprintf('Test K-S dla porównania wzrostu mężczyzn i kobiet: h = %d, p = %.4f\n', h_compare, p_compare);
 
-% Wykres dystrybuant
-n_men = length(height_men);
-x_men = sort(height_men);
-y_men = (1:n_men) / n_men;
-
-n_women = length(height_women);
-x_women = sort(height_women);
-y_women = (1:n_women) / n_women;
-
 figure;
 subplot(2,1,1);
 qqplot(height_men);
@@ -34,11 +25,7 @@ subplot(2,1,2)
 qqplot(height_women);
 title('Wykres Q-Q plot dla wzrostu kobiet');
 
-
 figure;
-plot(x_men, y_men, 'bo-', x_women, y_women, 'ro-');
-title('Empiryczne dystrybuanty dla wzrostu mężczyzn i kobiet');
-xlabel('Wzrost [cm]');
-ylabel('Dystrybuanta F(x)');
-legend('Mężczyźni', 'Kobiety');
-grid on;
+cdfplot(height_men);
+hold;
+cdfplot(height_women);
