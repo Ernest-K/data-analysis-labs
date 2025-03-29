@@ -1,0 +1,21 @@
+clc, clear, close all
+
+nerwowi  = [3, 3, 4, 5, 5];
+spokojni = [4, 6, 7, 9, 9];
+
+% czy mozemy zastosowac t-test?
+disp("K-S testy nerwowych, spokojnych")
+[hn, pn, cin, ksn] = kstest(nerwowi)
+fprintf("Nerwowi: h = %d, p = %.4f\n", hn, pn);
+[hs, ps, cis, kss] = kstest(spokojni)
+
+
+disp("F-test")
+[hf, pf, cif, f] = vartest2(nerwowi, spokojni)
+
+% test
+% H0: Osoby nerwowe gestykulują mniej (μ_s > μ_n)
+% H1: Osoby nerwowe gestykulują więcej (μ_s < μ_n)
+disp("t-test")
+[h, p, ci, s] = ttest2(nerwowi,spokojni,'tail','left')
+% hipoteza alternatywna to to, ze nerwowi wykonuja wiecej gestow
