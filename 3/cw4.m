@@ -1,6 +1,5 @@
 clc, clear, close all
 
-% Wczytanie danych
 data = readtable('3/dane/pacjenci.csv');
 height_men = data.wzrost(strcmp(data.plec,'M'));
 height_women = data.wzrost(strcmp(data.plec, 'K'));

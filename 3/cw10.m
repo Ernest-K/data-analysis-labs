@@ -1,6 +1,5 @@
 clc, clear, close all
 
-% Wczytanie danych
 graduates = readtable('3/dane/absolwenci.csv');
 agriculture_salary = graduates.SALARY(strcmp(graduates.COLLEGE, 'Rolnictwo'));
 pedagogy_salary = graduates.SALARY(strcmp(graduates.COLLEGE, 'Pedagogika'));

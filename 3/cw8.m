@@ -1,6 +1,5 @@
 clc, clear, close all
 
-% Wczytanie danych
 bulbs = readtable('3/dane/zarowki.csv');
 bulbs_time = bulbs.czas;
 

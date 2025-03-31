@@ -1,6 +1,5 @@
 clc, clear, close all
 
-% Wczytanie danych (jeśli nie zostały wczytane wcześniej)
 data = readtable('3/dane/pacjenci.csv');
 sugar = data.cukier;
 

@@ -1,6 +1,5 @@
 clc, clear, close all
 
-% Wczytanie danych
 capacitors = readtable('3/dane/kondensatory.csv');
 capacitor_capacity = capacitors.pojemnosc;
 
