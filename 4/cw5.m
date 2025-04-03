@@ -14,6 +14,8 @@ else
     fprintf('Rozkład wyników NIE jest zbliżony do rozkładu normalnego\n');
 end
 
+qqplot(data13);
+
 % Wartość testowa (hipotetyczna średnia)
 mu0 = 169.051;
 

@@ -1,6 +1,5 @@
 clc, clear, close all
 
-% Dane
 mniej30 = [6, 7, 10, 9];
 po30 = [5, 6, 2, 3];
 
@@ -10,6 +9,12 @@ disp("SW testy")
 fprintf("poniżej 30: h = %d, p = %.4f\n", h1, p1);
 [h2, p2] = swtest(po30, 0.05);
 fprintf("powyżej 30: h = %d, p = %.4f\n", h2, p2);
+
+figure;
+subplot(1, 2, 1);
+qqplot(mniej30);
+subplot(1, 2, 2);
+qqplot(po30);
 
 % Test na równość wariancji (test F)
 [h_var, p_var] = vartest2(mniej30, po30);

@@ -21,15 +21,15 @@ qqplot(spokojni);
 
 % Wybór t testu
 if h_var == 0  % Jeśli wariancje są równe
-    [h_t, p_t, ci, stats] = ttest2(nerwowi, spokojni, 'Vartype', 'equal');
+    [h_t, p_t, ci, stats] = ttest2(nerwowi, spokojni, 'Vartype', 'equal', 'tail','right');
     fprintf('Test t dla równych wariancji (Student)\n');
 else  % Jeśli wariancje są różne
-    [h_t, p_t, ci, stats] = ttest2(nerwowi, spokojni, 'Vartype', 'unequal');
+    [h_t, p_t, ci, stats] = ttest2(nerwowi, spokojni, 'Vartype', 'unequal', 'tail','right');
     fprintf('Test t dla nierównych wariancji (Welcha)\n');
 end
 
-% H0: Średnia liczba gestów wykonywanych przez osoby nerwowe jest taka sama jak u osób spokojnych (μ_n = μ_s)
-% H1: Średnia liczba gestów wykonywanych przez osoby nerwowe jest różna niż u osób spokojnych (μ_n != μ_s)
+% H0: Średnia liczba gestów wykonywanych przez osoby nerwowe i osoby spokojne jest taka sama (μ_s =  μ_n)
+% H1: Średnia liczba gestów wykonywanych przez osoby nerwowe jest większa niż u osób spokojnych (μ_s < μ_n)
 
 % Wyniki
 fprintf('Wartość statystyki t: %.4f\n', stats.tstat);
@@ -39,7 +39,7 @@ fprintf('Przedział ufności 95%%: [%.4f, %.4f]\n', ci(1), ci(2));
 
 % Interpretacja wyniku
 if h_t == 1
-    fprintf('Odrzucamy hipotezę zerową: średnie liczby gestów różnią się istotnie.\n');
+    fprintf('Odrzucamy hipotezę zerową: średnia liczba gestów osób nerwowych jest większa.\n');
 else
-    fprintf('Brak podstaw do odrzucenia hipotezy zerowej: nie ma istotnej różnicy w liczbie gestów.\n');
+    fprintf('Brak podstaw do odrzucenia hipotezy zerowej: średnia liczba gestów osób nerwowych i spokojnych jest taka sama.\n');
 end

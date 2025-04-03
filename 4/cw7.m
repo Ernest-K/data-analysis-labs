@@ -4,8 +4,8 @@ clc, clear, close all
 nerwowi = [3, 3, 4, 5, 5];
 spokojni = [4, 6, 7, 9, 9];
 
-% H0: Rozkłady liczby gestów w obu grupach są identyczne
-% H1: Osoby nerwowe mają inną liczbę gestów niż osoby spokojne 
+% H0: Rozkłady liczby gestów w obu grupach są takie same 
+% H1: Rozkłady liczby gestów w obu grupach są różne
 
 alpha = 0.05;
 
