@@ -5,26 +5,7 @@ w2 = [73 68 75 54 53 84 84 86 66 84 78 58 91 57 59 88 71 84 64 85];
 
 % Analiza graficzna
 figure;
-subplot(2,2,1);
 boxplot([w1', w2'], 'Labels', {'Przed dietą', 'Po diecie'});
-title('Porównanie wagi przed i po diecie');
-
-subplot(2,2,2);
-plot(w1, w2, 'o');
-hold on;
-plot([50 100], [50 100], 'r--'); % Linia równości
-xlabel('Waga przed dietą');
-ylabel('Waga po diecie');
-title('Waga przed vs. po diecie');
-
-subplot(2,2,3);
-hist(w1-w2, 10);
-title('Histogram różnic wagi');
-xlabel('Różnica wagi (przed-po)');
-
-subplot(2,2,4);
-normplot(w1-w2);
-title('Wykres normalności różnic');
 
 % H0: Dieta nie powoduje zmniejszenie ciężaru ciała (w1 = w2)
 % H1: Dieta powoduje zmniejszenie ciężaru ciała (w1 > w2)
