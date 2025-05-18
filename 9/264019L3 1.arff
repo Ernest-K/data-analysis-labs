@@ -1,6 +1,6 @@
 @relation '264019L1 2-weka.filters.unsupervised.attribute.MergeManyValues-C1-Ldobry-R1,3-weka.filters.unsupervised.attribute.MergeManyValues-C1-Lzly-R1,2,3-weka.filters.unsupervised.attribute.Remove-R10-weka.filters.unsupervised.attribute.Reorder-Rfirst-last-weka.filters.unsupervised.attribute.Reorder-Rlast-first-weka.filters.unsupervised.attribute.Discretize-B5-M-1.0-R4-precision6'
 
-@attribute 'okres w jakim bêdzie pobieral dochod' numeric
+@attribute 'okres w jakim bedzie pobieral dochod' numeric
 @attribute 'okres w jakim pobieral dochod' numeric
 @attribute plec {kobieta,mezczyzna}
 @attribute wiek {'\'(-inf-30.4]\'','\'(30.4-42.8]\'','\'(42.8-55.2]\'','\'(55.2-67.6]\'','\'(67.6-inf)\''}
