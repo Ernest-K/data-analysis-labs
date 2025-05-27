@@ -74,6 +74,20 @@ ylabel('Emisja CO2 (g/km)');
 xlabel('Marka');
 grid on;
 
+
+figure; % Stwórz nowe okno dla histogramów
+sgtitle('Histogramy emisji CO2 (g/km) dla wybranych marek');
+
+for i = 1:length(selectedMakes)
+    currentMake = selectedMakes(i);
+    fieldName = char(currentMake);
+    dataForHistogram = co2DataByMake.(fieldName)(~isnan(co2DataByMake.(fieldName)));
+    
+    subplot(1, length(selectedMakes), i); % 1 wiersz, tyle kolumn ile marek, i-ty subplot
+    histogram(dataForHistogram, 'Normalization', 'pdf'); % 'pdf' dla gęstości
+    hold on;
+end
+
 % ĆWICZENIE 3
 
 % Sprawdzenie normalności 
@@ -82,11 +96,12 @@ alpha_normality = 0.05;
 
 disp('Ćwiczenie 3: Sprawdzanie normalności rozkładu emisji CO2');
 
-marki_do_testu = selectedMakes;
 isNormal = struct();
+figure; 
+sgtitle('Wykresy Q-Q Plot dla emisji CO2 dla wybranych marek');
 
-for i = 1:length(marki_do_testu)
-    currentMake = marki_do_testu(i);
+for i = 1:length(selectedMakes)
+    currentMake = selectedMakes(i);
     fieldName = char(currentMake);
     data = co2DataByMake.(fieldName);
     
@@ -107,9 +122,9 @@ for i = 1:length(marki_do_testu)
     end
     
     % Wykres Q-Q plot
-    figure;
+    subplot(1, length(selectedMakes), i); % 1 wiersz, tyle kolumn ile marek, i-ty subplot
     qqplot(data);
-    title(['Q-Q Plot dla emisji CO2 - Marka: ', char(currentMake)]);
+    title(char(currentMake)); % Używamy char() dla pewności z string array
     grid on;
 end
 
@@ -119,18 +134,18 @@ alpha_variance = 0.05;
 
 disp('Ćwiczenie 3: Sprawdzanie równości wariancji emisji CO2');
 
-% Test Levene'a
+% Test Barletta
 % H0: wariancje są równe we wszystkich grupach
 % H1: co najmniej jedna wariancja jest różna
 
-[p_levene, stats_levene] = vartestn(co2_all_selected, group_labels_for_boxplot);
+[p_barletta, stats_barletta] = vartestn(co2_all_selected, group_labels_for_boxplot);
     
-fprintf('Test Levene''a: p-value = %.4f\n', p_levene);
-if p_levene < alpha_variance
-    fprintf('Wg testu Levene''a, ODRZUCAMY H0. Wariancje emisji CO2 NIE są równe między markami (p < %.2f).\n', alpha_variance);
+fprintf('Test Levene''a: p-value = %.4f\n', p_barletta);
+if p_barletta < alpha_variance
+    fprintf('Wg testu Barletta, ODRZUCAMY H0. Wariancje emisji CO2 NIE są równe między markami (p < %.2f).\n', alpha_variance);
     variance_equal = false;
 else
-    fprintf('Wg testu Levene''a, BRAK PODSTAW do odrzucenia H0. Wariancje emisji CO2 można uznać za równe (p >= %.2f).\n', alpha_variance);
+    fprintf('Wg testu Barletta, BRAK PODSTAW do odrzucenia H0. Wariancje emisji CO2 można uznać za równe (p >= %.2f).\n', alpha_variance);
     variance_equal = true;
 end
 
@@ -143,31 +158,22 @@ disp('Ćwiczenie 3: Test Kruskala-Wallisa');
 temp_table_for_kw = table(co2_all_selected, group_labels_for_boxplot, 'VariableNames', {'CO2', 'Group'});
 temp_table_for_kw = rmmissing(temp_table_for_kw, 'DataVariables', 'CO2');
 
-if height(temp_table_for_kw) < 3 || length(unique(temp_table_for_kw.Group)) < 2
-    disp('Za mało danych lub grup po usunięciu NaN do przeprowadzenia testu Kruskala-Wallisa.');
+% Test Kruskala-Wallisa
+% H0: wszystkie próbki pochodzą z populacji o tej samej medianie
+% H1: co najmniej jedna próbka pochodzi z populacji o innej medianie
+[p_kw, tbl_kw, stats_kw] = kruskalwallis(temp_table_for_kw.CO2, temp_table_for_kw.Group, 'off');
+
+fprintf('Test Kruskala-Wallisa:\n');
+fprintf('  Chi-kwadrat (przybliżony) = %.4f\n', tbl_kw{2,5}); % Wartość statystyki testowej
+fprintf('  Stopnie swobody (df) = %d\n', tbl_kw{2,3});
+fprintf('  p-value = %.4f\n', p_kw);
+
+if p_kw < alpha_main_test
+    fprintf('Wniosek: ODRZUCAMY H0. Istnieją statystycznie istotne różnice w medianach emisji CO2 między markami (p < %.2f).\n', alpha_main_test);
+    kruskal_wallis_significant = true;
 else
-    % Test Kruskala-Wallisa
-    % H0: wszystkie próbki pochodzą z populacji o tej samej medianie
-    % H1: co najmniej jedna próbka pochodzi z populacji o innej medianie
-    [p_kw, tbl_kw, stats_kw] = kruskalwallis(temp_table_for_kw.CO2, temp_table_for_kw.Group, 'off');
-
-    fprintf('Test Kruskala-Wallisa:\n');
-    fprintf('  Chi-kwadrat (przybliżony) = %.4f\n', tbl_kw{2,5}); % Wartość statystyki testowej
-    fprintf('  Stopnie swobody (df) = %d\n', tbl_kw{2,3});
-    fprintf('  p-value = %.4f\n', p_kw);
-
-    if p_kw < alpha_main_test
-        fprintf('Wniosek: ODRZUCAMY H0. Istnieją statystycznie istotne różnice w medianach emisji CO2 między markami (p < %.2f).\n', alpha_main_test);
-        kruskal_wallis_significant = true;
-    else
-        fprintf('Wniosek: BRAK PODSTAW do odrzucenia H0. Nie stwierdzono statystycznie istotnych różnic w medianach emisji CO2 między markami (p >= %.2f).\n', alpha_main_test);
-        kruskal_wallis_significant = false;
-    end
-    
-    % Wyświetlenie tabeli wyników z funkcji kruskalwallis (jeśli potrzebne)
-    disp('Tabela wyników testu Kruskala-Wallisa:');
-    disp(cell2table(tbl_kw(2:end,:), 'VariableNames', tbl_kw(1,:))); % tbl_kw zawiera też nagłówki
-    
+    fprintf('Wniosek: BRAK PODSTAW do odrzucenia H0. Nie stwierdzono statystycznie istotnych różnic w medianach emisji CO2 między markami (p >= %.2f).\n', alpha_main_test);
+    kruskal_wallis_significant = false;
 end
 
 disp('Ćwiczenie 3: Analiza post-hoc po teście Kruskala-Wallisa');
@@ -183,11 +189,15 @@ else
     fprintf('Test Kruskala-Wallisa nie był istotny, analiza post-hoc nie jest konieczna.\n');
 end
 
+% Nie robimy anova1 bo nie są spełnione założenia normalności i równych wariancji
+% multicompare bo p_kw < 0.05
+
 alpha_pairwise = 0.05; % Poziom istotności dla testów parami
 
 disp('Ćwiczenie 4: Testy parami (U Manna-Whitneya)');
+% ranksum to nieparametryczny odpowiednik t-testu dla prób niezależnych, bo
+% nie są spełnione założenia normalności i równych wariancji
 
-% Pobranie danych dla każdej marki (bez NaN)
 toyota_data_clean = co2DataByMake.TOYOTA(~isnan(co2DataByMake.TOYOTA));
 nissan_data_clean = co2DataByMake.NISSAN(~isnan(co2DataByMake.NISSAN));
 honda_data_clean = co2DataByMake.HONDA(~isnan(co2DataByMake.HONDA));
@@ -215,7 +225,7 @@ end
 fprintf('Test U Manna-Whitneya (ranksum): p-value = %.4f, H = %d (1=odrzuć H0)\n', p_nissan_honda, h_nissan_honda);
 if h_nissan_honda
     fprintf('Wniosek: Istnieje statystycznie istotna różnica w rozkładach emisji CO2 między Nissanem a Hondą (p < %.2f).\n', alpha_pairwise);
-else stats_results
+else
     fprintf('Wniosek: Brak podstaw do stwierdzenia istotnej różnicy w rozkładach emisji CO2 między Nissanem a Hondą (p >= %.2f).\n', alpha_pairwise);
 end
 
